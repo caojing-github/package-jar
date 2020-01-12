@@ -62,6 +62,9 @@ public class ESscript {
     }
 
     public static void main(String[] args) throws IOException {
+
+        System.out.println("开始执行");
+
         String index = "judgementsearch_dev";
         String indexType = "judgement";
 
@@ -107,5 +110,7 @@ public class ESscript {
         ES.ES_1.client.clearScroll(clear, RequestOptions.DEFAULT);
 
         ES.ES_1.client.close();
+
+        System.out.println("执行成功");
     }
 }
