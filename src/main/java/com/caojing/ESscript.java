@@ -35,8 +35,15 @@ public class ESscript {
         /**
          * 案例解析dev环境
          */
-        ES_1(
+        DEV(
             "172.16.71.1:9606,172.16.71.1:9607,172.16.71.1:9608,172.16.71.2:9606,172.16.71.2:9607,172.16.71.2:9608"
+        ),
+
+        /**
+         * 案例解析线上环境
+         */
+        PRO(
+            "172.16.76.101:9605,172.16.76.102:9605,172.16.76.103:9605,172.16.76.104:9605,172.16.76.105:9605"
         );
 
         /**
@@ -65,6 +72,7 @@ public class ESscript {
 
         System.out.println("开始执行");
 
+        RestHighLevelClient client = ES.PRO.client;
         String index = "judgementsearch_dev";
         String indexType = "judgement";
 
@@ -80,7 +88,7 @@ public class ESscript {
         request.source(sourceBuilder);
         request.scroll(keepAlive);
 
-        SearchResponse response = ES.ES_1.client.search(request, RequestOptions.DEFAULT);
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         String scrollId = response.getScrollId();
         SearchHit[] hits = response.getHits().getHits();
 
@@ -95,21 +103,21 @@ public class ESscript {
 
             BulkRequest bulkRequest = new BulkRequest();
             list.forEach(x -> bulkRequest.add(new UpdateRequest(index, indexType, x).doc("prosecution_organ_term", v)));
-            ES.ES_1.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            client.bulk(bulkRequest, RequestOptions.DEFAULT);
 
             SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
             scrollRequest.scroll(keepAlive);
 
-            response = ES.ES_1.client.scroll(scrollRequest, RequestOptions.DEFAULT);
+            response = client.scroll(scrollRequest, RequestOptions.DEFAULT);
             scrollId = response.getScrollId();
             hits = response.getHits().getHits();
         }
 
         ClearScrollRequest clear = new ClearScrollRequest();
         clear.addScrollId(scrollId);
-        ES.ES_1.client.clearScroll(clear, RequestOptions.DEFAULT);
+        client.clearScroll(clear, RequestOptions.DEFAULT);
 
-        ES.ES_1.client.close();
+        client.close();
 
         System.out.println("执行成功");
     }
