@@ -12,3 +12,8 @@ java -jar getToken.jar
 java -jar getToken.jar test
 ```
 * jar包目录会生成 包含所有token的文件`token.txt`  
+
+部署在172.16.71.3  
+```shell script
+nohup java -jar hbase.jar --server.port=9999 &
+```
