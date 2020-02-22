@@ -11,4 +11,14 @@ java -jar getToken.jar
 ```shell script
 java -jar getToken.jar test
 ```
-* jar包目录会生成 包含所有token的文件`token.txt`  
+* jar包目录会生成 包含所有token的文件`token.txt` 
+
+部署在172.16.71.3 
+只启动  
+```shell script
+nohup java -jar http.jar --server.port=9998 > http.log 2>&1 &
+``` 
+启动并打开日志  
+```shell script
+nohup java -jar http.jar --server.port=9998 > http.log 2>&1 & tail -f http.log
+``` 

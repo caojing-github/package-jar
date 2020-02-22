@@ -1,0 +1,14 @@
+### 更新token
+POST {{host}}/http/updateToken
+token: caojing666
+
+### 代理GET请求
+POST {{host}}/http/proxyGet
+Content-Type: application/json
+
+{
+  "url": "https://alphalawyer.cn/judgement-search/api/v1/search/caseList?order=&pageIndex=1&pageSize=100&query=%E5%85%A8%E6%96%87:%EF%BC%882019%EF%BC%89%E7%B2%A42071%E6%B0%91%E5%88%9D10618%E5%8F%B7"
+}
+
+###
+
