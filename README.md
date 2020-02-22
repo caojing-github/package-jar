@@ -22,3 +22,8 @@ nohup java -jar http.jar --server.port=9998 > http.log 2>&1 &
 ```shell script
 nohup java -jar http.jar --server.port=9998 > http.log 2>&1 & tail -f http.log
 ``` 
+
+杀死进程命令  
+```shell script
+jps -ml . | grep http.jar | xargs . kill
+```
