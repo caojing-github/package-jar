@@ -33,14 +33,20 @@ import static com.caojing.HttpUtils.doGet;
 public class Application {
 
     @Setter
-    public static String token;
+    public static String proToken;
+
+    @Setter
+    public static String devToken;
 
     /**
      * 初始化token
      */
     public Application() throws IOException {
-        InputStream in = Application.class.getClassLoader().getResourceAsStream("token.txt");
-        token = new BufferedReader(new InputStreamReader(Objects.requireNonNull(in))).readLine();
+        InputStream in1 = Application.class.getClassLoader().getResourceAsStream("pro-token.txt");
+        proToken = new BufferedReader(new InputStreamReader(Objects.requireNonNull(in1))).readLine();
+
+        InputStream in2 = Application.class.getClassLoader().getResourceAsStream("dev-token.txt");
+        devToken = new BufferedReader(new InputStreamReader(Objects.requireNonNull(in2))).readLine();
     }
 
     public static void main(String[] args) {
@@ -51,8 +57,10 @@ public class Application {
      * 更新token
      */
     @PostMapping("/updateToken")
-    public String updateToken(@RequestHeader String token) {
-        setToken(token);
+    public String updateToken(@RequestHeader String proToken,
+                              @RequestHeader String devToken) {
+        setProToken(proToken);
+        setDevToken(devToken);
         return "更新成功";
     }
 
@@ -67,8 +75,8 @@ public class Application {
     @PostMapping("/proxyGet")
     public JSONObject proxyGet(@RequestBody JSONObject request) throws Exception {
         Map<String, String> headers = new HashMap<>(2);
-        headers.put("token", token);
         String url = request.getString("url");
+        headers.put("token", url.startsWith("https://alphalawyer.cn") ? proToken : devToken);
         return JSONObject.parseObject(EntityUtils.toString(doGet(headers, url).getEntity()));
     }
 
