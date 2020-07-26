@@ -98,4 +98,23 @@ public class Application {
             .map(y -> y.getString("jid"))
             .collect(Collectors.toList());
     }
+
+    /**
+     * 查询生产环境法规lid集合
+     *
+     * @param request 请求体
+     * @return List
+     * @author CaoJing
+     * @date 2020/02/21 15:33:37
+     */
+    @PostMapping("/getLidList")
+    public List<String> getLidList(@RequestBody JSONObject request) throws Exception {
+        return proxyGet(request)
+            .getJSONObject("data")
+            .getJSONArray("lawRegus")
+            .stream()
+            .map(x -> (JSONObject) x)
+            .map(y -> y.getString("lid"))
+            .collect(Collectors.toList());
+    }
 }
